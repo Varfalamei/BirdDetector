@@ -6,9 +6,11 @@
 
 
 # Открытые datasets
+"""
 https://www.kaggle.com/competitions/birdclef-2023
 https://www.kaggle.com/competitions/birdclef-2022
 https://www.kaggle.com/competitions/birdclef-2021
+"""
 
 #### Состав команды
 1. Шакиров Ренат
