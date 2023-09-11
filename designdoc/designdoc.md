@@ -105,4 +105,4 @@ ___________________
 
 ## 2.2. Блок-схема решения
 
-![Solution Block Diagram](./Solution-Block-Diagram.jpg "Solution Block Diagram")
+![Solution Block Diagram](./solution-block-diagram.jpg "Solution Block Diagram")
