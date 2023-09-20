@@ -18,9 +18,11 @@
 
 
 # Открытые datasets
-https://www.kaggle.com/competitions/birdclef-2023
-https://www.kaggle.com/competitions/birdclef-2022
-https://www.kaggle.com/competitions/birdclef-2021
+
+- https://www.kaggle.com/competitions/birdclef-2023
+- https://www.kaggle.com/competitions/birdclef-2022
+- https://www.kaggle.com/competitions/birdclef-2021
+
 
 # Датасэт с добавленной датой 
 https://drive.google.com/file/d/18gCWw8IkqbFr9X0TCBM5LCpsU11Ga6tc/view?usp=sharing
