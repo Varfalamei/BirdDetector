@@ -1,0 +1,19 @@
+# GPU
+
+# pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu117
+# pip install -U albumentations[imgaug]
+# Kaggle dependency
+
+jupyter
+pandas
+numpy
+scikit-learn
+python-box
+matplotlib
+albumentations
+opencv-python
+PyYAML
+loguru
+segmentation-models-pytorch==0.3.3
+soundfile
+librosa

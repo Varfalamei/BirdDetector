@@ -1,0 +1,13 @@
+debug: False
+seed : 1771
+path_to_files_base: "../data"
+batch_size : 16
+num_workers: 0
+optimizer_lr: 0.006
+optimizer_wd: 0
+scheduler: "CosineAnnealingWarmRestarts"
+model_name: "tf_efficientnet_b0"
+metric : "custom"
+loss_f: "nn.BCEWithLogitsLoss()"
+optimizer: "Adam"
+epochs: 16
