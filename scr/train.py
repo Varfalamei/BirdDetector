@@ -209,6 +209,13 @@ if __name__  == "__main__":
                                      weight_decay=config.optimizer_wd
                                      )
 
+    elif config.optimizer == "AdamW":
+        optimizer = torch.optim.AdamW(model.parameters(),
+                                      lr=config.optimizer_lr)
+
+    else:
+        raise ValueError('optimizer not find!')
+
     if config.scheduler == "CosineAnnealingWarmRestarts":
         logger.info(f"Scheduler - {config.scheduler}")
         scheduler = CosineAnnealingWarmRestarts(optimizer,
@@ -216,6 +223,9 @@ if __name__  == "__main__":
                                                 T_mult=2,
                                                 eta_min=0.000001,
                                                 last_epoch=-1)
+
+    else:
+        logger.info("No scheduler")
 
     # Train_loop
     logger.info(f"Starting train. Model - {config.model_name}")
