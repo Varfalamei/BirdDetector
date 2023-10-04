@@ -6,8 +6,8 @@ num_workers: 0
 optimizer_lr: 0.006
 optimizer_wd: 0
 scheduler: "CosineAnnealingWarmRestarts"
-model_name: "tf_efficientnet_b0"
+model_name: "tf_efficientnet_b2"
 metric : "custom"
 loss_f: "nn.BCEWithLogitsLoss()"
 optimizer: "Adam"
-epochs: 16
+epochs: 10
