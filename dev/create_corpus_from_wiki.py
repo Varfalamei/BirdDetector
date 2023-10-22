@@ -72,7 +72,11 @@ def content_from_WIKI_page(url: str) -> dict:
         for link in links:
             link_url = link['href']
             #  Проверяю, что ссылка введёт на страницу википедии, без изображения флага и картинки машины.
-            if link_url.startswith("/wiki/") and "svg" not in link_url and "jpg" not in link_url:
+            if (link_url.startswith("/wiki/")
+                    and "svg" not in link_url.lower()
+                    and "jpg" not in link_url.lower()
+                    and "png" not in link_url.lower()
+            ):
                 full_link = "https://ru.wikipedia.org" + link_url
                 lst_with_links.append(full_link)
 
@@ -94,11 +98,11 @@ def content_from_WIKI_page(url: str) -> dict:
 
 def main():
     class Config:
-        folder = './corpus_2/wiki'
-        time_to_sleep = 1.5
+        folder = './corpus_22_10/wiki'
+        time_to_sleep = 1
         max_len_corpus = 10000
         first_url = "https://ru.wikipedia.org/wiki/Mercedes-Benz"
-        size_csv = 250
+        size_csv = 500
         only_with_special_words = False
 
     # Create logger system and folders for save corpus
@@ -117,8 +121,18 @@ def main():
     while len(lst_url):
         time.sleep(Config.time_to_sleep)
 
-        # Drop url from queue
-        url = lst_url.pop()
+        # Find an url with "merc" and drop the url from queue or just take the first url
+        url = None
+        for item in lst_url:
+            if "merc" in item.lower():
+                url = item
+                break
+
+        if url is not None:
+            lst_url.remove(url)
+        else:
+            url = lst_url.pop(0)
+
         logger.info(f"{counter}, count_sample, {len(list_with_sample)}, len queue: {len(lst_url)}, url {url},")
 
         # Check url in the list of passed urls
@@ -161,16 +175,14 @@ def main():
             list_with_sample = []
             logger.info(f"df {name_df}.csv is saved")
 
-        if counter % 100 == 0:
+        if counter % 5 == 0:
+
+            ## Добавить логику удаляния повторов (сет?)
+
             logger.info('Check url from check urls in lst_url')
             logger.info(f'Old size: lst_url {len(lst_url)}, check_urls {len(check_urls)}')
+            lst_url = list(set(lst_url))
             lst_url = [url for url in lst_url if url not in check_urls]
-            uniq_lst_url = []
-            [uniq_lst_url.append(url) for url in lst_url if url not in uniq_lst_url]
-            lst_url = uniq_lst_url
-            uniq_check_urls = []
-            [uniq_check_urls.append(url) for url in check_urls if url not in uniq_check_urls]
-            check_urls = uniq_check_urls
 
             lst_url.sort(key=lambda x: "merc" not in x.lower())
 
