@@ -98,7 +98,7 @@ def content_from_WIKI_page(url: str) -> dict:
 
 def main():
     class Config:
-        folder = './corpus_22_10/wiki'
+        folder = './corpus/wiki'
         time_to_sleep = 1
         max_len_corpus = 10000
         first_url = "https://ru.wikipedia.org/wiki/Mercedes-Benz"
