@@ -51,6 +51,7 @@ class AWSUser:
             response = s3_client.get_object(Bucket=bucket_name, Key=object_name)
             file_content = response['Body'].read().decode('utf-8')
             print(f"Файл {object_name} успешно прочитан из  {bucket_name}")
+            return file_content
         except Exception as e:
             print(f"Ошибка при загрузке файла в бакет S3: {e}")
 
