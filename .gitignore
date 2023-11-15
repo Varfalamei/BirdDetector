@@ -1,1 +1,4 @@
 /src/config.ini
+/dev/no_processed_pages.txt
+/dev/corpus/
+.idea/

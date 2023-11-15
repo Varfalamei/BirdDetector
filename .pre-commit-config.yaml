@@ -1,0 +1,27 @@
+repos:
+  - repo: https://github.com/PyCQA/flake8
+    rev: "6.1.0"
+    hooks:
+      - id: flake8
+        language: python
+        name: flake8
+        entry: flake8
+        args: ["./src"]
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: "v1.7.0"
+    hooks:
+      - id: mypy
+        language: python
+        name: mypy
+        entry: mypy
+        args: ["./src"]
+        types:
+          - "python"
+  - repo: https://github.com/klen/pylama
+    rev: '8.4.1'
+    hooks:
+      - id: pylama
+        language: python
+        name: pylama
+        entry: pylama
+        args: ["./src"]
