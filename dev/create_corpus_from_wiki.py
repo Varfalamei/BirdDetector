@@ -27,17 +27,16 @@ def try_to_find_word(article_text: str) -> bool:
 def content_from_WIKI_page(url: str) -> dict:
     lst_with_links = []
     try:
-        response = requests.get(url, timeout=10)  # Установите желаемый таймаут, например, 10 секунд.
+        response = requests.get(
+            url, timeout=10
+        )  # Установите желаемый таймаут, например, 10 секунд.
     except (RequestException, Timeout) as e:
         print(f"Error while fetching {url}: {e}")
-        return {
-            "url": url,
-            "status": "Error"
-        }
+        return {"url": url, "status": "Error"}
 
     if response.status_code == 200:
         page_content = response.text
-        soup = BeautifulSoup(page_content, 'html.parser')
+        soup = BeautifulSoup(page_content, "html.parser")
 
         # Удаление ссылок на примечание по типу [3], [5] и т.д.
         reference_sup_elements = soup.find_all("sup", {"class": "reference"})
@@ -49,8 +48,17 @@ def content_from_WIKI_page(url: str) -> dict:
         for edit_section_element in edit_section_elements:
             edit_section_element.decompose()
 
-        for heading_id in ["См._также", "Примечания", "Библиография", "Ссылки", "Литература", "Галерея"]:
-            first_heading = soup.find("span", {"class": "mw-headline", "id": heading_id})
+        for heading_id in [
+            "См._также",
+            "Примечания",
+            "Библиография",
+            "Ссылки",
+            "Литература",
+            "Галерея",
+        ]:
+            first_heading = soup.find(
+                "span", {"class": "mw-headline", "id": heading_id}
+            )
             if first_heading:
                 parent_element = first_heading.find_parent()
                 for element in parent_element.find_all_next():
@@ -63,19 +71,19 @@ def content_from_WIKI_page(url: str) -> dict:
                 "url": url,
                 "article_text": article_text.strip(),
                 "links": None,
-                "status": "No find special words"
-
+                "status": "No find special words",
             }
 
-        links = soup.find_all('a', href=True)
+        links = soup.find_all("a", href=True)
 
         for link in links:
-            link_url = link['href']
+            link_url = link["href"]
             #  Проверяю, что ссылка введёт на страницу википедии, без изображения флага и картинки машины.
-            if (link_url.startswith("/wiki/")
-                    and "svg" not in link_url.lower()
-                    and "jpg" not in link_url.lower()
-                    and "png" not in link_url.lower()
+            if (
+                link_url.startswith("/wiki/")
+                and "svg" not in link_url.lower()
+                and "jpg" not in link_url.lower()
+                and "png" not in link_url.lower()
             ):
                 full_link = "https://ru.wikipedia.org" + link_url
                 lst_with_links.append(full_link)
@@ -84,21 +92,17 @@ def content_from_WIKI_page(url: str) -> dict:
             "url": url,
             "article_text": article_text.strip(),
             "links": lst_with_links,
-            "status": "Ok"
-
+            "status": "Ok",
         }
     else:
         print(f"url {url}, error:{response.status_code}")
 
-        return {
-            "url": url,
-            "status": "Error"
-        }
+        return {"url": url, "status": "Error"}
 
 
 def main():
     class Config:
-        folder = './corpus/wiki'
+        folder = "./corpus/wiki"
         time_to_sleep = 1
         max_len_corpus = 10000
         first_url = "https://ru.wikipedia.org/wiki/Mercedes-Benz"
@@ -133,7 +137,9 @@ def main():
         else:
             url = lst_url.pop(0)
 
-        logger.info(f"{counter}, count_sample, {len(list_with_sample)}, len queue: {len(lst_url)}, url {url},")
+        logger.info(
+            f"{counter}, count_sample, {len(list_with_sample)}, len queue: {len(lst_url)}, url {url},"
+        )
 
         # Check url in the list of passed urls
         if url in check_urls:
@@ -141,26 +147,23 @@ def main():
         check_urls.append(url)
 
         # Parsing url
-        result = content_from_WIKI_page(url=url,
-                                        )
+        result = content_from_WIKI_page(
+            url=url,
+        )
 
         if result["status"] == "Error":
-            sample = {
-                "url": result['url'],
-                "context": None,
-                "status": "Error"
-            }
+            sample = {"url": result["url"], "context": None, "status": "Error"}
         elif result["status"] == "No find special words":
             sample = {
-                "url": result['url'],
-                "context": result['article_text'],
-                "status": "No find special words"
+                "url": result["url"],
+                "context": result["article_text"],
+                "status": "No find special words",
             }
         else:
             sample = {
-                "url": result['url'],
-                "context": result['article_text'],
-                "status": "Ok"
+                "url": result["url"],
+                "context": result["article_text"],
+                "status": "Ok",
             }
             lst_url.extend(result["links"])
 
@@ -176,21 +179,26 @@ def main():
             logger.info(f"df {name_df}.csv is saved")
 
         if counter % 5 == 0:
+            # Добавить логику удаляния повторов (сет?)
 
-            ## Добавить логику удаляния повторов (сет?)
-
-            logger.info('Check url from check urls in lst_url')
-            logger.info(f'Old size: lst_url {len(lst_url)}, check_urls {len(check_urls)}')
+            logger.info("Check url from check urls in lst_url")
+            logger.info(
+                f"Old size: lst_url {len(lst_url)}, check_urls {len(check_urls)}"
+            )
             lst_url = list(set(lst_url))
             lst_url = [url for url in lst_url if url not in check_urls]
 
             lst_url.sort(key=lambda x: "merc" not in x.lower())
 
-            logger.info(f'New size: lst_url {len(lst_url)}, check_urls {len(check_urls)}')
+            logger.info(
+                f"New size: lst_url {len(lst_url)}, check_urls {len(check_urls)}"
+            )
 
         # Check of number of processed pages
         if counter > Config.max_len_corpus:
-            logger.info(f"More than {Config.max_len_corpus} pages have been uploaded. Finished")
+            logger.info(
+                f"More than {Config.max_len_corpus} pages have been uploaded. Finished"
+            )
             df = pd.DataFrame(list_with_sample)
             name_df = str(len(os.listdir(Config.folder)))
             df.to_csv(f"{Config.folder}/{name_df}.csv", index=False)
@@ -204,5 +212,5 @@ def main():
     logger.info("Finished")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
