@@ -28,12 +28,12 @@ async def root():
 
 
 @app.get("/get-time")
-async def root():
+async def get_time():
     time_now = ex_1.check_time()
     return {"time": time_now}
 
 
 @app.get("/upd-time")
-async def root():
+async def update_time():
     ex_1.update_time()
     return {"status": "OK"}
