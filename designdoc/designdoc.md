@@ -320,7 +320,7 @@ MVP: Наличие скриптов и правил, для первичной 
 блок схем.
 
 - Блок-схема для понимания, обновления end-point с моделью
-  ![model_upd](./Model update flowchart.jpg)
+  ![model_upd](./Model_update_flowchart.jpg)
 - Блок-схема "сессии" пользователя с ассистентом.
   ![session_flowchart](./Session flowchart.jpg)
 - Блок-схема логики обработки запроса внутри END-POINTA
